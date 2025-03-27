@@ -1,0 +1,15 @@
+<!-- netlify.toml (for configuration) -->
+# netlify.toml
+[build]
+  publish = "./"
+  command = "# no build command"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+<!-- _redirects (for Netlify routing) -->
+# _redirects
+# Fallback for client-side routing
+/*    /index.html   200

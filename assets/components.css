@@ -1,0 +1,130 @@
+/* assets/css/components.css */
+/* Banner Component */
+.site-banner {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: var(--space-md) 0;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .banner-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .site-logo {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-light);
+  }
+  
+  .site-logo:hover {
+    color: var(--text-light);
+    text-decoration: none;
+  }
+  
+  /* Navigation */
+  .nav-container {
+    display: flex;
+    gap: var(--space-lg);
+  }
+  
+  /* Dropdown Component */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-toggle {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: var(--font-size-md);
+    cursor: pointer;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropdown-toggle:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--card-bg);
+    min-width: 160px;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-sm) 0;
+    z-index: 1;
+    display: none;
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+  }
+  
+  .dropdown-item {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-dark);
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--border);
+  }
+  
+  /* Form Elements */
+  .form-group {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: 500;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-sm);
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  /* Grid System */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+  }
+  
+  .col {
+    padding: 0 15px;
+    flex: 1;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+    
+    .nav-container {
+      gap: var(--space-md);
+    }
+  }

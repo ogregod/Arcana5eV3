@@ -1,0 +1,100 @@
+/* login/auth.css (used for both login and signup) */
+.auth-container {
+    max-width: 480px;
+    margin: var(--space-xl) auto;
+  }
+  
+  .auth-card {
+    padding: var(--space-xl);
+  }
+  
+  .auth-title {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    color: var(--primary);
+  }
+  
+  .btn-full {
+    width: 100%;
+    padding: var(--space-md);
+    margin-top: var(--space-md);
+  }
+  
+  .auth-links {
+    margin-top: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+  }
+  
+  .auth-links a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .auth-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .divider {
+    position: relative;
+    text-align: center;
+    margin: var(--space-lg) 0;
+  }
+  
+  .divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--border);
+  }
+  
+  .divider span {
+    position: relative;
+    background-color: var(--card-bg);
+    padding: 0 var(--space-md);
+    color: var(--text-dark);
+    opacity: 0.7;
+    font-size: var(--font-size-sm);
+  }
+  
+  .btn-social {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    background-color: var(--card-bg);
+    color: var(--text-dark);
+    border: 1px solid var(--border);
+  }
+  
+  .btn-social:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .btn-social img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .error-message {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-sm);
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+  
+  .success-message {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-sm);
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+  }

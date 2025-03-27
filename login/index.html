@@ -1,0 +1,76 @@
+<!-- login/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Arcana5E</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/login/auth.css">
+</head>
+<body>
+  <!-- Include Banner Component -->
+  <div id="banner-placeholder"></div>
+  
+  <main class="main-content">
+    <div class="container">
+      <div class="auth-container">
+        <div class="auth-card card">
+          <h1 class="auth-title">Login to Arcana5E</h1>
+          
+          <form id="login-form">
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="form-group">
+              <button type="submit" class="btn btn-full">Log In</button>
+            </div>
+            
+            <div id="login-error" class="error-message" style="display: none;"></div>
+            
+            <div class="auth-links">
+              <a href="#" id="forgot-password">Forgot password?</a>
+              <a href="/signup">Don't have an account? Sign up</a>
+            </div>
+          </form>
+          
+          <div class="divider">
+            <span>OR</span>
+          </div>
+          
+          <div class="social-login">
+            <button type="button" id="google-login" class="btn btn-social">
+              <img src="/assets/images/icons/google.svg" alt="Google icon"> 
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 Arcana5E. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- JavaScript -->
+  <script type="module" src="/assets/js/auth.js"></script>
+  <script type="module" src="/login/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!-- components/banner/banner.html -->
+<header class="site-banner">
+  <div class="banner-container container">
+    <a href="/welcome" class="site-logo">Arcana5E</a>
+    
+    <nav class="nav-container">
+      <!-- Tools Dropdown -->
+      <div class="dropdown">
+        <button class="dropdown-toggle">Tools</button>
+        <div class="dropdown-menu">
+          <a href="/tools/price-checker" class="dropdown-item">Price Checker</a>
+          <!-- Future tools go here -->
+        </div>
+      </div>
+      
+      <!-- My Content Dropdown -->
+      <div class="dropdown">
+        <button class="dropdown-toggle">My Content</button>
+        <div class="dropdown-menu">
+          <!-- Future content options go here -->
+          <a href="/my-content" class="dropdown-item">Coming Soon</a>
+        </div>
+      </div>
+      
+      <!-- Account Dropdown -->
+      <div class="dropdown">
+        <button class="dropdown-toggle">Account</button>
+        <div class="dropdown-menu">
+          <!-- Login required options (shown when not logged in) -->
+          <a href="/login" class="dropdown-item login-required">Log In</a>
+          <a href="/signup" class="dropdown-item login-required">Sign Up</a>
+          
+          <!-- User options (shown when logged in) -->
+          <a href="/account" class="dropdown-item user-only">Manage</a>
+          <a href="#" class="dropdown-item user-only" id="logout-btn">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

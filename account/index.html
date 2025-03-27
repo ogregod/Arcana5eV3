@@ -1,0 +1,195 @@
+<!-- account/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Management - Arcana5E</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/account/account.css">
+</head>
+<body>
+  <!-- Include Banner Component -->
+  <div id="banner-placeholder"></div>
+  
+  <main class="main-content">
+    <div class="container">
+      <h1 class="page-title">Account Management</h1>
+      
+      <!-- Only show this for authenticated users -->
+      <div class="user-only" style="display: none;">
+        
+        <div class="row account-container">
+          <!-- Account Sidebar -->
+          <div class="col sidebar">
+            <div class="card profile-card">
+              <div class="profile-picture-container">
+                <img src="/assets/images/default-avatar.png" alt="Profile" id="profile-image" class="profile-picture">
+                <button class="btn btn-small change-picture-btn" id="change-picture-btn">
+                  Change Picture
+                </button>
+                <input type="file" id="profile-picture-upload" accept="image/*" hidden>
+              </div>
+              <h2 class="user-display-name">User</h2>
+              <p class="user-email" id="user-email">user@example.com</p>
+              
+              <div class="subscription-status">
+                <div class="status-badge free-tier" id="free-tier">Free Tier</div>
+                <div class="status-badge patron-tier" id="patron-tier" style="display: none;">Patron</div>
+              </div>
+            </div>
+            
+            <div class="card patreon-card">
+              <h3>Patreon Connection</h3>
+              <div id="patreon-status" class="patreon-status not-connected">
+                <p>Not connected to Patreon</p>
+                <a href="#" class="btn" id="connect-patreon-btn">Connect Patreon</a>
+              </div>
+              <div id="patreon-connected" class="patreon-status connected" style="display: none;">
+                <p>Connected to Patreon</p>
+                <p class="patreon-tier">Tier: <span id="patreon-tier-name">Supporter</span></p>
+                <button class="btn btn-small" id="disconnect-patreon-btn">Disconnect</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Account Settings -->
+          <div class="col settings">
+            <div class="card">
+              <h3>Account Settings</h3>
+              <form id="account-form">
+                <div class="form-group">
+                  <label for="display-name" class="form-label">Display Name</label>
+                  <input type="text" id="display-name" class="form-control" placeholder="Your display name">
+                </div>
+                
+                <div class="form-group">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input type="email" id="email" class="form-control" placeholder="Your email address" disabled>
+                  <small>Email cannot be changed</small>
+                </div>
+                
+                <div class="form-group">
+                  <button type="button" id="change-password-btn" class="btn">Change Password</button>
+                </div>
+                
+                <div id="password-change-form" style="display: none;">
+                  <div class="form-group">
+                    <label for="current-password" class="form-label">Current Password</label>
+                    <input type="password" id="current-password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="new-password" class="form-label">New Password</label>
+                    <input type="password" id="new-password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label for="confirm-password" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <button type="button" id="save-password-btn" class="btn">Update Password</button>
+                    <button type="button" id="cancel-password-btn" class="btn btn-secondary">Cancel</button>
+                  </div>
+                </div>
+                
+                <hr>
+                
+                <h3>Preferences</h3>
+                <div class="form-group">
+                  <label for="theme" class="form-label">Theme</label>
+                  <select id="theme" class="form-control">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="system">System Default</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" class="btn">Save Changes</button>
+                </div>
+              </form>
+            </div>
+            
+            <div class="card">
+              <h3>Patron Benefits</h3>
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <div class="benefit-icon available">✓</div>
+                  <div class="benefit-text">
+                    <h4>Basic Account</h4>
+                    <p>Access to price checker and basic features</p>
+                  </div>
+                </div>
+                
+                <div class="benefit-item">
+                  <div id="custom-items-icon" class="benefit-icon locked">🔒</div>
+                  <div class="benefit-text">
+                    <h4>Custom Items</h4>
+                    <p>Create and store your own custom items</p>
+                  </div>
+                </div>
+                
+                <div class="benefit-item">
+                  <div id="custom-locations-icon" class="benefit-icon locked">🔒</div>
+                  <div class="benefit-text">
+                    <h4>Custom Locations</h4>
+                    <p>Define custom shops and marketplaces</p>
+                  </div>
+                </div>
+                
+                <div class="benefit-item">
+                  <div id="price-adjustment-icon" class="benefit-icon locked">🔒</div>
+                  <div class="benefit-text">
+                    <h4>Price Adjustments</h4>
+                    <p>Set regional price variations</p>
+                  </div>
+                </div>
+                
+                <div class="benefit-item">
+                  <div id="bulk-export-icon" class="benefit-icon locked">🔒</div>
+                  <div class="benefit-text">
+                    <h4>Bulk Export</h4>
+                    <p>Export items to PDF or CSV</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="cta-container">
+                <a href="https://patreon.com/arcana5e" class="btn" target="_blank">Become a Patron</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Show this if user is not logged in -->
+      <div class="login-required card">
+        <h2>Please Log In</h2>
+        <p>You need to be logged in to access account management features.</p>
+        <div class="cta-container">
+          <a href="/login" class="btn">Log In</a>
+          <a href="/signup" class="btn btn-secondary">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 Arcana5E. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- JavaScript -->
+  <script type="module" src="/assets/js/auth.js"></script>
+  <script type="module" src="/account/account.js"></script>
+</body>
+</html>
