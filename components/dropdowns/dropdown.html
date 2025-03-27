@@ -1,8 +1,117 @@
 <!-- components/dropdowns/dropdown.html -->
+<!--
+  Dropdown Component
+  
+  This file contains examples of dropdown components that can be used throughout the application.
+  Each dropdown consists of:
+  1. A container div with the class "dropdown"
+  2. A toggle button with the class "dropdown-toggle"
+  3. A menu div with the class "dropdown-menu"
+  4. Menu items with the class "dropdown-item"
+-->
+
+<!-- Basic Dropdown Example -->
 <div class="dropdown">
-    <button class="dropdown-toggle">Menu Name</button>
+    <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+      Dropdown Menu
+    </button>
     <div class="dropdown-menu">
       <a href="#" class="dropdown-item">Item 1</a>
       <a href="#" class="dropdown-item">Item 2</a>
+      <a href="#" class="dropdown-item">Item 3</a>
     </div>
   </div>
+  
+  <!-- Usage Examples -->
+  <!-- 
+    Example 1: Navigation Dropdown
+    Used in the main navigation to display sub-menu items
+  -->
+  <div class="dropdown">
+    <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+      Tools
+    </button>
+    <div class="dropdown-menu">
+      <a href="/tools/price-checker" class="dropdown-item">Price Checker</a>
+      <a href="/tools/calculator" class="dropdown-item">DnD Calculator</a>
+      <a href="/tools/map-maker" class="dropdown-item">Map Maker</a>
+    </div>
+  </div>
+  
+  <!-- 
+    Example 2: Account Dropdown
+    Used for user account actions
+  -->
+  <div class="dropdown">
+    <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+      Account
+    </button>
+    <div class="dropdown-menu">
+      <!-- Login-required items (only shown when logged out) -->
+      <a href="/login" class="dropdown-item login-required">Log In</a>
+      <a href="/signup" class="dropdown-item login-required">Sign Up</a>
+      
+      <!-- User-only items (only shown when logged in) -->
+      <a href="/account" class="dropdown-item user-only">Manage Account</a>
+      <a href="#" class="dropdown-item user-only" id="logout-btn">Log Out</a>
+    </div>
+  </div>
+  
+  <!-- 
+    Example 3: Filter Dropdown
+    Used for filtering content
+  -->
+  <div class="dropdown">
+    <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+      Filter By
+    </button>
+    <div class="dropdown-menu">
+      <a href="#" class="dropdown-item" data-filter="all">All Items</a>
+      <a href="#" class="dropdown-item" data-filter="weapons">Weapons</a>
+      <a href="#" class="dropdown-item" data-filter="armor">Armor</a>
+      <a href="#" class="dropdown-item" data-filter="potions">Potions</a>
+    </div>
+  </div>
+  
+  <!-- 
+    Example 4: Dropdown with Dividers
+    Used for grouping related actions
+  -->
+  <div class="dropdown">
+    <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+      Actions
+    </button>
+    <div class="dropdown-menu">
+      <a href="#" class="dropdown-item">View</a>
+      <a href="#" class="dropdown-item">Edit</a>
+      <div class="dropdown-divider"></div>
+      <a href="#" class="dropdown-item">Share</a>
+      <a href="#" class="dropdown-item">Export</a>
+      <div class="dropdown-divider"></div>
+      <a href="#" class="dropdown-item text-danger">Delete</a>
+    </div>
+  </div>
+  
+  <!--
+    How to Use This Component:
+    
+    1. Copy the desired dropdown structure from the examples above
+    2. Customize the dropdown toggle text and dropdown items as needed
+    3. Ensure the proper CSS classes are applied:
+       - "dropdown" for the container
+       - "dropdown-toggle" for the button
+       - "dropdown-menu" for the menu
+       - "dropdown-item" for each menu item
+    4. Include the dropdown.js script to enable functionality:
+       <script src="/components/dropdowns/dropdown.js"></script>
+    
+    Note: The dropdown.js script must be included on any page where dropdowns are used,
+    or the functionality can be imported into your page script as follows:
+    
+    ```javascript
+    import { initDropdown } from '/components/dropdowns/dropdown.js';
+    
+    // Initialize all dropdowns on the page
+    initDropdown();
+    ```
+  -->
