@@ -1,16 +1,20 @@
 // assets/js/navigation.js
 // Navigation functionality
 
-// Initialize dropdowns
+/**
+ * Initialize dropdown menus
+ * Makes dropdowns interactive with proper show/hide functionality
+ */
 export function initDropdowns() {
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
     
+    // Add click event to each dropdown toggle
     dropdownToggles.forEach(toggle => {
       toggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        const dropdown = this.parentElement;
+        const dropdown = this.closest('.dropdown');
         const menu = dropdown.querySelector('.dropdown-menu');
         
         // Close all other dropdowns
@@ -33,30 +37,53 @@ export function initDropdowns() {
         });
       }
     });
+    
+    // Close dropdowns when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+          menu.classList.remove('show');
+        });
+      }
+    });
   }
   
-  // Initialize active navigation based on current page
+  /**
+   * Set active navigation item based on current page
+   */
   export function initActiveNav() {
     const currentPath = window.location.pathname;
     
     // Find matching nav item and add active class
     document.querySelectorAll('nav a').forEach(link => {
-      if (link.getAttribute('href') === currentPath) {
+      const linkPath = link.getAttribute('href');
+      
+      // Check if the current path matches the link or if it's a sub-path
+      if (linkPath && (currentPath === linkPath || 
+          (linkPath !== '/' && currentPath.startsWith(linkPath)))) {
         link.classList.add('active');
         
         // If in dropdown, also mark parent
         const dropdownItem = link.closest('.dropdown-item');
         if (dropdownItem) {
           const dropdown = dropdownItem.closest('.dropdown');
-          dropdown.classList.add('active');
+          if (dropdown) {
+            dropdown.classList.add('active');
+          }
         }
       }
     });
   }
   
-  // Initialize navigation on page load
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize navigation when called directly
+  export function initNavigation() {
     initDropdowns();
     initActiveNav();
-  });
+  }
   
+  // Export for use in other modules
+  export default {
+    initDropdowns,
+    initActiveNav,
+    initNavigation
+  };

@@ -2,8 +2,11 @@
 import { logOut } from '/assets/js/auth.js';
 import { initDropdowns } from '/assets/js/navigation.js';
 
-// Initialize dropdowns
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize banner functionality
+function initBanner() {
+  console.log('Initializing banner...');
+  
+  // Initialize dropdowns
   initDropdowns();
   
   // Add logout functionality
@@ -19,4 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+}
+
+// Run initialization when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBanner);
+} else {
+  // If DOMContentLoaded has already fired, run immediately
+  initBanner();
+}
