@@ -33,6 +33,8 @@
     gap: var(--space-lg);
   }
   
+/* Add this to your components.css file - replace the existing dropdown styles */
+
 /* Dropdown Component */
 .dropdown {
     position: relative;
@@ -52,8 +54,9 @@
     align-items: center;
   }
   
-  .dropdown-toggle:hover {
+  .dropdown-toggle:hover, .dropdown-toggle:focus {
     background-color: var(--primary-dark);
+    outline: none;
   }
   
   .dropdown-toggle::after {
@@ -100,12 +103,16 @@
     border: 0;
     text-decoration: none;
     transition: background-color 0.2s ease;
+    cursor: pointer; /* Ensure cursor shows this is clickable */
+    position: relative; /* Enable proper z-index stacking */
+    z-index: 1001; /* Make sure items appear above other elements */
   }
   
   .dropdown-item:hover, .dropdown-item:focus {
     color: var(--primary);
     text-decoration: none;
     background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
   }
   
   .dropdown-item.active {

@@ -29,6 +29,32 @@ export function initDropdowns() {
       });
     });
     
+    // Handle dropdown item clicks properly
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        // Only prevent default if it's a button with no href or "#" href
+        const href = this.getAttribute('href');
+        if (this.tagName === 'BUTTON' || href === '#' || href === '') {
+          e.preventDefault();
+        }
+        
+        // Special handling for logout button and other special actions
+        if (this.id === 'logout-btn') {
+          // Logout is handled separately in banner.js
+          return;
+        }
+        
+        // For regular links, let the browser handle navigation
+        // The click will bubble up and close the dropdown automatically
+        console.log('Dropdown item clicked:', this.textContent, 'href:', href);
+        
+        // Close the dropdown
+        const dropdown = this.closest('.dropdown');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        menu.classList.remove('show');
+      });
+    });
+    
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
       if (!e.target.closest('.dropdown')) {
