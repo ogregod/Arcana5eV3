@@ -221,3 +221,39 @@
     font-size: 0.9rem;
   }
 }
+
+/* Force horizontal layout for navigation container */
+.nav-container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+  gap: var(--space-lg) !important;
+  align-items: center !important;
+}
+
+/* Make sure dropdown menus display properly */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  min-width: 10rem;
+  z-index: 9999;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0;
+}
+
+/* Critical show class - adding !important to ensure priority */
+.dropdown-menu.show {
+  display: block !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .nav-container {
+    margin-top: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center !important;
+  }
+}
