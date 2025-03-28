@@ -1,11 +1,9 @@
 // components/banner/banner.js
 import { logOut } from '/assets/js/auth.js';
 
-// Wait for DOM to be fully loaded before initializing
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Banner component loaded, initializing dropdowns...');
-  initBanner();
-});
+// Initialize when this script loads
+console.log('Banner script loaded - initializing dropdown functionality');
+initBanner();
 
 // Initialize banner and dropdown functionality
 function initBanner() {
@@ -23,9 +21,8 @@ function initDropdownToggles() {
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   console.log(`Found ${dropdownToggles.length} dropdown toggles in banner`);
   
-  // Add click handlers to dropdown toggles (without cloning)
+  // Add click handlers to dropdown toggles
   dropdownToggles.forEach(toggle => {
-    // Clean approach: remove old listeners with a new one
     toggle.addEventListener('click', handleDropdownToggle);
   });
 }
@@ -34,6 +31,8 @@ function initDropdownToggles() {
 function handleDropdownToggle(e) {
   e.preventDefault();
   e.stopPropagation();
+  
+  console.log('Dropdown toggle clicked:', this.textContent.trim());
   
   const toggle = e.currentTarget;
   const dropdown = toggle.closest('.dropdown');
