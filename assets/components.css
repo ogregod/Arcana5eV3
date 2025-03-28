@@ -29,17 +29,16 @@
   text-decoration: none;
 }
 
-/* Navigation */
+/* Navigation - FIXED TO ENSURE HORIZONTAL LAYOUT */
 .nav-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   gap: var(--space-lg);
 }
 
-/* Dropdown Component */
-/* .banner-dropdown class is used to specifically target banner dropdowns in JS */
-
+/* Dropdown Component - ENHANCED FOR RELIABILITY */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -77,12 +76,12 @@
   vertical-align: middle;
 }
 
-/* Dropdown menu - Improved positioning and visibility */
+/* Dropdown menu - FIXED POSITIONING AND VISIBILITY */
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 9999; /* Extremely high z-index to ensure visibility */
+  z-index: 9999;
   min-width: 10rem;
   padding: 0.5rem 0;
   margin-top: 0.25rem;
@@ -100,7 +99,7 @@
   transform: none;
 }
 
-/* Critical show class - simplified for reliability */
+/* Critical show class - FIXED FOR RELIABILITY */
 .dropdown-menu.show {
   display: block !important;
 }
@@ -120,7 +119,7 @@
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  z-index: 10000; /* Even higher z-index for items */
+  z-index: 10000;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -186,7 +185,7 @@
   flex: 1;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - FIXED FOR MOBILE */
 @media (max-width: 768px) {
   .row {
     flex-direction: column;
@@ -197,11 +196,11 @@
   }
 }
 
-/* For very small screens - UPDATED to maintain horizontal nav */
+/* For very small screens - IMPROVED */
 @media (max-width: 576px) {
   .banner-container {
-    flex-direction: row; /* Keep horizontal layout */
-    flex-wrap: wrap; /* Allow wrapping if needed */
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: var(--space-sm) var(--space-md);
   }
   
@@ -211,49 +210,13 @@
   
   .nav-container {
     margin-top: var(--space-sm);
-    width: auto; /* Don't force full width */
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: center;
   }
   
   /* Smaller font and padding for mobile */
   .dropdown-toggle {
     padding: var(--space-xs) var(--space-sm);
     font-size: 0.9rem;
-  }
-}
-
-/* Force horizontal layout for navigation container */
-.nav-container {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: flex-end !important;
-  gap: var(--space-lg) !important;
-  align-items: center !important;
-}
-
-/* Make sure dropdown menus display properly */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  min-width: 10rem;
-  z-index: 9999;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-  padding: 0.5rem 0;
-}
-
-/* Critical show class - adding !important to ensure priority */
-.dropdown-menu.show {
-  display: block !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 576px) {
-  .nav-container {
-    margin-top: var(--space-sm);
-    flex-wrap: wrap;
-    justify-content: center !important;
   }
 }
