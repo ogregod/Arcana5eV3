@@ -1,15 +1,18 @@
 // components/banner/banner.js
 import { logOut } from '/assets/js/auth.js';
 
-// Call initBanner immediately 
+// Call initBanner immediately
 initBanner();
 
 // Initialize banner and dropdown functionality
 function initBanner() {
-  console.log('Initializing banner with dropdown functionality...');
+  console.log('Initializing banner with super robust dropdown functionality...');
   
-  // Fix pointer-events issue IMMEDIATELY
-  fixDropdownItemsPointerEvents();
+  // Fix dropdown items IMMEDIATELY and repeatedly
+  fixAllDropdownItems();
+  
+  // Set interval to repeatedly fix dropdown items (helps with dynamic content)
+  setInterval(fixAllDropdownItems, 500);
   
   // Initialize dropdown toggles
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
@@ -17,7 +20,11 @@ function initBanner() {
   
   // Add click handlers to dropdown toggles
   dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', function(e) {
+    // Clear any existing listeners
+    const newToggle = toggle.cloneNode(true);
+    toggle.parentNode.replaceChild(newToggle, toggle);
+    
+    newToggle.addEventListener('click', function(e) {
       console.log('Dropdown toggle clicked:', this.textContent.trim());
       e.preventDefault();
       e.stopPropagation();
@@ -30,7 +37,7 @@ function initBanner() {
       document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
         if (openMenu !== menu) {
           openMenu.classList.remove('show');
-          openMenu.style.display = '';
+          openMenu.style.display = 'none';
         }
       });
       
@@ -41,10 +48,12 @@ function initBanner() {
       if (menu.classList.contains('show')) {
         menu.style.display = 'block';
         
-        // Re-apply pointer-events fix to ensure items are clickable
-        fixDropdownItemsPointerEvents();
+        // Apply fixes IMMEDIATELY when dropdown opens
+        setTimeout(() => {
+          fixDropdownItems(menu);
+        }, 0);
       } else {
-        menu.style.display = '';
+        menu.style.display = 'none';
       }
     });
   });
@@ -52,7 +61,6 @@ function initBanner() {
   // Set up logout functionality
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
-    console.log('Found logout button, attaching event listener');
     logoutBtn.addEventListener('click', handleLogout);
   }
   
@@ -61,7 +69,7 @@ function initBanner() {
     if (!e.target.closest('.dropdown')) {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
-        menu.style.display = '';
+        menu.style.display = 'none';
       });
     }
   });
@@ -71,57 +79,67 @@ function initBanner() {
     if (e.key === 'Escape') {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
-        menu.style.display = '';
+        menu.style.display = 'none';
       });
     }
-  });
-  
-  // Also install a MutationObserver to catch dynamically added/changed dropdown items
-  const observer = new MutationObserver(fixDropdownItemsPointerEvents);
-  observer.observe(document.body, { 
-    childList: true, 
-    subtree: true 
   });
 }
 
-// Function to fix pointer-events on dropdown items
-function fixDropdownItemsPointerEvents() {
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    // Force pointer-events to auto
+// Fix all dropdown items in the document
+function fixAllDropdownItems() {
+  document.querySelectorAll('.dropdown-menu').forEach(menu => {
+    fixDropdownItems(menu);
+  });
+}
+
+// Apply fixes to all items in a specific dropdown menu
+function fixDropdownItems(menu) {
+  const items = menu.querySelectorAll('.dropdown-item');
+  console.log(`Fixing ${items.length} dropdown items in menu`);
+  
+  items.forEach(item => {
+    // Force pointer-events and other critical styles
     item.style.pointerEvents = 'auto';
+    item.style.cursor = 'pointer';
+    item.style.position = 'relative';
+    item.style.zIndex = '10000';
+    item.style.display = 'block';
     
-    // Add direct event listener if not already added
-    if (!item.hasAttribute('data-click-fixed')) {
-      item.setAttribute('data-click-fixed', 'true');
-      
-      item.addEventListener('click', function(e) {
-        console.log('Dropdown item clicked:', this.textContent.trim());
-        
-        // Handle logout button specially
-        if (this.id === 'logout-btn') {
-          e.preventDefault();
-          handleLogout(e);
-          return;
-        }
-        
-        // For links, let the browser handle navigation
-        const href = this.getAttribute('href');
-        if (href && href !== '#' && !href.startsWith('javascript:')) {
-          console.log('Navigating to:', href);
-          // Let the default behavior happen
-        } else {
-          // Prevent default for non-links
-          e.preventDefault();
-        }
-        
-        // Close dropdown
-        const menu = this.closest('.dropdown-menu');
-        if (menu) {
-          menu.classList.remove('show');
-          menu.style.display = '';
-        }
-      });
+    // Add super-aggressive click handling
+    // First remove any existing listeners to avoid duplicates
+    const newItem = item.cloneNode(true);
+    if (item.parentNode) {
+      item.parentNode.replaceChild(newItem, item);
     }
+    
+    // Now add our robust click handler
+    newItem.addEventListener('click', function(event) {
+      // Stop event from propagating to other elements
+      event.stopPropagation();
+      
+      const href = this.getAttribute('href');
+      console.log('Dropdown item clicked:', this.textContent.trim(), 'href:', href);
+      
+      // Special handling for logout button
+      if (this.id === 'logout-btn') {
+        event.preventDefault();
+        handleLogout();
+        return;
+      }
+      
+      // Direct navigation for links
+      if (href && href !== '#' && !href.startsWith('javascript:')) {
+        event.preventDefault(); // Prevent default to ensure our navigation works
+        console.log('Navigating directly to:', href);
+        window.location.href = href;
+      }
+      
+      // Close all dropdown menus
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        menu.style.display = 'none';
+      });
+    });
   });
 }
 
