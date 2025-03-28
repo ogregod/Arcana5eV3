@@ -6,17 +6,6 @@ console.log('Banner script loaded - initializing dropdown functionality');
 initBanner();
 
 // Initialize banner and dropdown functionality
-function initBanner() {
-  // Initialize dropdown toggles
-  initDropdownToggles();
-  
-  // Set up logout functionality
-  initLogout();
-  
-  // Set up global click and key handlers
-  initGlobalHandlers();
-}
-
 // Add this right after your initBanner() function
 function initBanner() {
   // Initialize dropdown toggles
@@ -34,22 +23,10 @@ function initBanner() {
 
 // Special fix for tools links
 function fixToolsLinks() {
-  // Get all dropdown toggles and find the Tools one
-  const toggles = document.querySelectorAll('.dropdown-toggle');
-  let toolsDropdown = null;
-  
-  toggles.forEach(toggle => {
-    if (toggle.textContent.trim() === 'Tools') {
-      toolsDropdown = toggle.closest('.dropdown');
-    }
-  });
-  
-  if (!toolsDropdown) {
-    console.error('Tools dropdown not found');
-    return;
-  }
-  
+  // Get all dropdown items in the Tools dropdown
+  const toolsDropdown = document.querySelector('.dropdown-toggle:contains("Tools")').closest('.dropdown');
   const toolLinks = toolsDropdown.querySelectorAll('.dropdown-item');
+  
   console.log(`Found ${toolLinks.length} tool links to fix`);
   
   toolLinks.forEach(link => {
