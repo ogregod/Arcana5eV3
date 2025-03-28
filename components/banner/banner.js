@@ -1,7 +1,9 @@
 // components/banner/banner.js
 import { logOut } from '/assets/js/auth.js';
 
-document.addEventListener('DOMContentLoaded', initBanner);
+// IMPORTANT CHANGE: Remove DOMContentLoaded event listener and call initBanner immediately
+// The script is already being loaded after the DOM is ready, so we can run right away
+initBanner();
 
 // Initialize banner and dropdown functionality
 function initBanner() {
@@ -26,11 +28,19 @@ function initBanner() {
       document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
         if (openMenu !== menu) {
           openMenu.classList.remove('show');
+          openMenu.style.display = ''; // Reset display style
         }
       });
       
       // Toggle this dropdown menu
       menu.classList.toggle('show');
+      
+      // Force display style to ensure visibility
+      if (menu.classList.contains('show')) {
+        menu.style.display = 'block';
+      } else {
+        menu.style.display = '';
+      }
     });
   });
   
@@ -46,6 +56,7 @@ function initBanner() {
     if (!e.target.closest('.dropdown')) {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
+        menu.style.display = '';
       });
     }
   });
@@ -55,6 +66,7 @@ function initBanner() {
     if (e.key === 'Escape') {
       document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
+        menu.style.display = '';
       });
     }
   });
