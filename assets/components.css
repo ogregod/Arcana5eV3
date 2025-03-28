@@ -32,8 +32,9 @@
 /* Navigation */
 .nav-container {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   gap: var(--space-lg);
-  flex-direction: row; /* Ensure horizontal layout */
 }
 
 /* Dropdown Component */
@@ -80,8 +81,7 @@
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%); /* Center the dropdown menu below the button */
+  left: 0;
   z-index: 9999; /* Extremely high z-index to ensure visibility */
   min-width: 10rem;
   padding: 0.5rem 0;
