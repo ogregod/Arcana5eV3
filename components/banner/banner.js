@@ -5,12 +5,36 @@ import { logOut } from '/assets/js/auth.js';
 function initBanner() {
   console.log('Initializing banner with integrated dropdown functionality...');
   
-  // Initialize dropdown toggles
-  const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+  // Check if banner has already been initialized to prevent duplicate initialization
+  if (document.querySelector('.site-banner')?.dataset.initialized === 'true') {
+    console.log('Banner already initialized, skipping...');
+    return;
+  }
+  
+  // Mark banner as initialized
+  const bannerElement = document.querySelector('.site-banner');
+  if (!bannerElement) {
+    console.error('Banner element not found in the DOM');
+    return;
+  }
+  
+  bannerElement.dataset.initialized = 'true';
+  
+  // Initialize dropdown toggles - explicitly limit scope to banner dropdowns only
+  const dropdownToggles = bannerElement.querySelectorAll('.dropdown-toggle');
   console.log(`Found ${dropdownToggles.length} dropdown toggles in banner`);
   
-  // Add click handlers to dropdown toggles
+  // Remove any existing event listeners to prevent duplication
   dropdownToggles.forEach(toggle => {
+    const newToggle = toggle.cloneNode(true);
+    toggle.parentNode.replaceChild(newToggle, toggle);
+  });
+  
+  // Get the new toggle elements
+  const newToggles = bannerElement.querySelectorAll('.dropdown-toggle');
+  
+  // Add click handlers to dropdown toggles
+  newToggles.forEach(toggle => {
     toggle.addEventListener('click', function(e) {
       console.log('Dropdown toggle clicked:', this.textContent.trim());
       e.preventDefault();
@@ -24,9 +48,10 @@ function initBanner() {
       console.log('Dropdown menu element:', menu);
       
       // Close all other open dropdowns
-      document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+      bannerElement.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
         if (openMenu !== menu) {
           openMenu.classList.remove('show');
+          openMenu.style.display = '';
         }
       });
       
@@ -36,14 +61,43 @@ function initBanner() {
       // Ensure display style is set correctly
       if (menu.classList.contains('show')) {
         menu.style.display = 'block';
+        
+        // Position adjustment for edge cases
+        const rect = menu.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        
+        // If the dropdown would go off the right edge of the screen
+        if (rect.right > viewportWidth) {
+          menu.style.left = 'auto';
+          menu.style.right = '0';
+          menu.style.transform = 'none';
+        }
+        
+        // If the dropdown would go off the left edge of the screen
+        if (rect.left < 0) {
+          menu.style.left = '0';
+          menu.style.right = 'auto';
+          menu.style.transform = 'none';
+        }
       } else {
         menu.style.display = '';
       }
     });
   });
   
-  // Add click handlers to dropdown items
-  document.querySelectorAll('.dropdown-item').forEach(item => {
+  // Add click handlers to dropdown items - explicitly limit scope to banner dropdown items only
+  const dropdownItems = bannerElement.querySelectorAll('.dropdown-item');
+  
+  // Remove any existing event listeners to prevent duplication
+  dropdownItems.forEach(item => {
+    const newItem = item.cloneNode(true);
+    item.parentNode.replaceChild(newItem, item);
+  });
+  
+  // Get the new dropdown items
+  const newItems = bannerElement.querySelectorAll('.dropdown-item');
+  
+  newItems.forEach(item => {
     item.addEventListener('click', function(e) {
       console.log('Dropdown item clicked:', this.textContent.trim(), 'href:', this.getAttribute('href'));
       
@@ -58,11 +112,18 @@ function initBanner() {
         handleLogout(e);
         return;
       }
+      
+      // Close the dropdown after click
+      const menu = this.closest('.dropdown-menu');
+      if (menu) {
+        menu.classList.remove('show');
+        menu.style.display = '';
+      }
     });
   });
   
   // Set up logout functionality
-  const logoutBtn = document.getElementById('logout-btn');
+  const logoutBtn = bannerElement.querySelector('#logout-btn');
   if (logoutBtn) {
     console.log('Found logout button, attaching event listener');
     logoutBtn.addEventListener('click', handleLogout);
@@ -72,9 +133,10 @@ function initBanner() {
   
   // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+    if (!e.target.closest('.banner-dropdown')) {
+      bannerElement.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
+        menu.style.display = '';
       });
     }
   });
@@ -82,8 +144,9 @@ function initBanner() {
   // Close dropdowns when pressing Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+      bannerElement.querySelectorAll('.dropdown-menu.show').forEach(menu => {
         menu.classList.remove('show');
+        menu.style.display = '';
       });
     }
   });
@@ -115,9 +178,10 @@ async function handleLogout(e) {
 // Initialize active navigation based on current page
 function initActiveNav() {
   const currentPath = window.location.pathname;
+  const bannerElement = document.querySelector('.site-banner');
   
   // Find matching nav item and add active class
-  document.querySelectorAll('nav a').forEach(link => {
+  bannerElement.querySelectorAll('nav a').forEach(link => {
     const href = link.getAttribute('href');
     if (!href) return;
     
