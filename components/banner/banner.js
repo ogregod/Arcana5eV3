@@ -6,7 +6,6 @@ console.log('Banner script loaded - initializing dropdown functionality');
 initBanner();
 
 // Initialize banner and dropdown functionality
-// Add this right after your initBanner() function
 function initBanner() {
   // Initialize dropdown toggles
   initDropdownToggles();
@@ -17,36 +16,8 @@ function initBanner() {
   // Set up global click and key handlers
   initGlobalHandlers();
   
-  // Add this line to call our new function
-  fixToolsLinks();
-}
-
-// Special fix for tools links
-function fixToolsLinks() {
-  // Get all dropdown items in the Tools dropdown
-  const toolsDropdown = document.querySelector('.dropdown-toggle:contains("Tools")').closest('.dropdown');
-  const toolLinks = toolsDropdown.querySelectorAll('.dropdown-item');
-  
-  console.log(`Found ${toolLinks.length} tool links to fix`);
-  
-  toolLinks.forEach(link => {
-    // First, make sure the item is properly styled and z-indexed
-    link.style.pointerEvents = 'auto';
-    link.style.cursor = 'pointer';
-    link.style.position = 'relative';
-    link.style.zIndex = '9999';
-    
-    // Remove any existing event listeners by cloning and replacing
-    const clone = link.cloneNode(true);
-    link.parentNode.replaceChild(clone, link);
-    
-    // Add direct click handler with forced navigation
-    clone.addEventListener('click', function(e) {
-      console.log(`Tool link clicked: ${this.textContent.trim()} - navigating to ${this.href}`);
-      e.stopPropagation(); // Stop event bubbling
-      window.location.href = this.href; // Force navigation
-    });
-  });
+  // Special fix for Price Checker link
+  fixPriceCheckerLink();
 }
 
 function initDropdownToggles() {
@@ -87,6 +58,31 @@ function handleDropdownToggle(e) {
   
   // Update ARIA attributes for accessibility
   toggle.setAttribute('aria-expanded', menu.classList.contains('show'));
+  
+  // Ensure all dropdown items are clickable with proper styles
+  if (menu.classList.contains('show')) {
+    fixDropdownItems(menu);
+  }
+}
+
+// Fix all dropdown items to ensure they're clickable
+function fixDropdownItems(menu) {
+  const items = menu.querySelectorAll('.dropdown-item');
+  console.log(`Fixing ${items.length} dropdown items in menu`);
+  
+  items.forEach(item => {
+    // Ensure proper styling
+    item.style.pointerEvents = 'auto';
+    item.style.cursor = 'pointer';
+    item.style.position = 'relative';
+    item.style.zIndex = '10000';
+    item.style.display = 'block';
+    
+    // Specially log if this is the Price Checker link
+    if (item.getAttribute('href') === '/tools/price-checker') {
+      console.log('Applied fixes to Price Checker link specifically');
+    }
+  });
 }
 
 // Clean functions to open, close, and toggle dropdowns
@@ -150,4 +146,125 @@ function initGlobalHandlers() {
       document.querySelectorAll('.dropdown-menu.show').forEach(closeDropdown);
     }
   });
+}
+
+// Special direct fix for the Price Checker link only
+function fixPriceCheckerLink() {
+  // Wait a short moment to ensure DOM is fully processed
+  setTimeout(() => {
+    // Find by exact href
+    const priceCheckerLink = document.querySelector('a[href="/tools/price-checker"]');
+    
+    if (priceCheckerLink) {
+      console.log('Found Price Checker link, applying special fix');
+      
+      // Remove any existing event listeners by cloning
+      const clone = priceCheckerLink.cloneNode(true);
+      
+      // Apply all necessary styles
+      clone.style.pointerEvents = 'auto';
+      clone.style.cursor = 'pointer';
+      clone.style.position = 'relative';
+      clone.style.zIndex = '10000';
+      clone.style.display = 'block';
+      
+      // Add direct click handler with forced navigation
+      clone.addEventListener('click', function(e) {
+        console.log('Price Checker link clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = '/tools/price-checker';
+      });
+      
+      // Replace the original link
+      if (priceCheckerLink.parentNode) {
+        priceCheckerLink.parentNode.replaceChild(clone, priceCheckerLink);
+        console.log('Price Checker link replaced with enhanced version');
+      }
+      
+      // After a brief delay, check if our enhanced link is working
+      setTimeout(() => {
+        const enhancedLink = document.querySelector('a[href="/tools/price-checker"]');
+        if (enhancedLink) {
+          console.log('Enhanced Price Checker link still in DOM');
+          
+          // Try one more approach - direct onclick attribute
+          enhancedLink.setAttribute('onclick', 'window.location.href="/tools/price-checker"; return false;');
+        }
+      }, 100);
+    } else {
+      console.error('Price Checker link not found by selector');
+      
+      // Try an alternative approach - find the Tools dropdown by text
+      const toolsToggles = Array.from(document.querySelectorAll('.dropdown-toggle')).filter(
+        toggle => toggle.textContent.trim() === 'Tools'
+      );
+      
+      if (toolsToggles.length > 0) {
+        const toolsDropdown = toolsToggles[0].closest('.dropdown');
+        const dropdownMenu = toolsDropdown.querySelector('.dropdown-menu');
+        
+        if (dropdownMenu) {
+          console.log('Found Tools dropdown menu, checking for Price Checker link');
+          
+          // Try finding with a more lenient selector
+          const links = dropdownMenu.querySelectorAll('a');
+          let foundPriceChecker = false;
+          
+          links.forEach(link => {
+            if (link.textContent.trim().includes('Price Checker') || link.href.includes('price-checker')) {
+              console.log('Found Price Checker by text/partial href');
+              foundPriceChecker = true;
+              
+              // Apply fixes to this link
+              link.style.pointerEvents = 'auto';
+              link.style.cursor = 'pointer';
+              link.style.position = 'relative';
+              link.style.zIndex = '10000';
+              link.style.display = 'block';
+              
+              // Replace with clone to remove existing event listeners
+              const clone = link.cloneNode(true);
+              link.parentNode.replaceChild(clone, link);
+              
+              // Add direct click handler
+              clone.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Price Checker clicked (found by text)');
+                window.location.href = '/tools/price-checker';
+                return false;
+              };
+            }
+          });
+          
+          if (!foundPriceChecker) {
+            console.log('Price Checker not found in Tools dropdown, creating new link');
+            
+            // Create a new Price Checker link
+            const newLink = document.createElement('a');
+            newLink.href = '/tools/price-checker';
+            newLink.className = 'dropdown-item';
+            newLink.textContent = 'Price Checker';
+            newLink.style.display = 'block';
+            newLink.style.pointerEvents = 'auto';
+            newLink.style.cursor = 'pointer';
+            newLink.style.position = 'relative';
+            newLink.style.zIndex = '10000';
+            
+            newLink.onclick = function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Price Checker clicked (new link)');
+              window.location.href = '/tools/price-checker';
+              return false;
+            };
+            
+            // Add the new link to the Tools dropdown
+            dropdownMenu.appendChild(newLink);
+          }
+        }
+      }
+    }
+  }, 300); // Short delay to ensure DOM is ready
 }
