@@ -1,8 +1,7 @@
 // components/banner/banner.js
 import { logOut } from '/assets/js/auth.js';
 
-// IMPORTANT CHANGE: Remove DOMContentLoaded event listener and call initBanner immediately
-// The script is already being loaded after the DOM is ready, so we can run right away
+// Call initBanner immediately - not waiting for DOMContentLoaded
 initBanner();
 
 // Initialize banner and dropdown functionality
@@ -28,7 +27,7 @@ function initBanner() {
       document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
         if (openMenu !== menu) {
           openMenu.classList.remove('show');
-          openMenu.style.display = ''; // Reset display style
+          openMenu.style.display = '';
         }
       });
       
@@ -44,12 +43,44 @@ function initBanner() {
     });
   });
   
-  // Set up logout functionality
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    console.log('Found logout button, attaching event listener');
-    logoutBtn.addEventListener('click', handleLogout);
-  }
+  // IMPORTANT: Add click handlers to dropdown items explicitly
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  console.log(`Found ${dropdownItems.length} dropdown items`);
+  
+  dropdownItems.forEach(item => {
+    // Remove any existing listeners to avoid duplication
+    const newItem = item.cloneNode(true);
+    item.parentNode.replaceChild(newItem, item);
+    
+    // Add a direct event handler for monitoring
+    newItem.addEventListener('click', function(e) {
+      // Only prevent default for buttons or anchors with no href
+      if (this.tagName === 'BUTTON' || !this.hasAttribute('href') || this.getAttribute('href') === '#') {
+        e.preventDefault();
+      }
+      
+      console.log('Dropdown item clicked:', this.textContent.trim(), 'href:', this.getAttribute('href'));
+      
+      // Special case for logout button
+      if (this.id === 'logout-btn') {
+        handleLogout(e);
+        return;
+      }
+      
+      // For items with href, handle navigation manually for greater reliability
+      const href = this.getAttribute('href');
+      if (href && href !== '#' && !href.startsWith('javascript:')) {
+        window.location.href = href;
+      }
+      
+      // Close dropdown after click
+      const menu = this.closest('.dropdown-menu');
+      if (menu) {
+        menu.classList.remove('show');
+        menu.style.display = '';
+      }
+    });
+  });
   
   // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
