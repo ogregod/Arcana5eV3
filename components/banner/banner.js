@@ -17,6 +17,61 @@ function initBanner() {
   initGlobalHandlers();
 }
 
+// Add this right after your initBanner() function
+function initBanner() {
+  // Initialize dropdown toggles
+  initDropdownToggles();
+  
+  // Set up logout functionality
+  initLogout();
+  
+  // Set up global click and key handlers
+  initGlobalHandlers();
+  
+  // Add this line to call our new function
+  fixToolsLinks();
+}
+
+// Special fix for tools links
+function fixToolsLinks() {
+  // Get all dropdown toggles and find the Tools one
+  const toggles = document.querySelectorAll('.dropdown-toggle');
+  let toolsDropdown = null;
+  
+  toggles.forEach(toggle => {
+    if (toggle.textContent.trim() === 'Tools') {
+      toolsDropdown = toggle.closest('.dropdown');
+    }
+  });
+  
+  if (!toolsDropdown) {
+    console.error('Tools dropdown not found');
+    return;
+  }
+  
+  const toolLinks = toolsDropdown.querySelectorAll('.dropdown-item');
+  console.log(`Found ${toolLinks.length} tool links to fix`);
+  
+  toolLinks.forEach(link => {
+    // First, make sure the item is properly styled and z-indexed
+    link.style.pointerEvents = 'auto';
+    link.style.cursor = 'pointer';
+    link.style.position = 'relative';
+    link.style.zIndex = '9999';
+    
+    // Remove any existing event listeners by cloning and replacing
+    const clone = link.cloneNode(true);
+    link.parentNode.replaceChild(clone, link);
+    
+    // Add direct click handler with forced navigation
+    clone.addEventListener('click', function(e) {
+      console.log(`Tool link clicked: ${this.textContent.trim()} - navigating to ${this.href}`);
+      e.stopPropagation(); // Stop event bubbling
+      window.location.href = this.href; // Force navigation
+    });
+  });
+}
+
 function initDropdownToggles() {
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   console.log(`Found ${dropdownToggles.length} dropdown toggles in banner`);
