@@ -220,3 +220,11 @@
     font-size: 0.9rem;
   }
 }
+
+/* Add this to the end of components.css */
+.dropdown-menu.show {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 9999 !important;
+}
