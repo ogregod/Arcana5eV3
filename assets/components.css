@@ -221,59 +221,22 @@
   }
 }
 
-/* Add this to the end of components.css */
-.dropdown-menu.show {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 9999 !important;
-}
-
-/* Critical fixes for dropdown menu visibility and interaction */
-.dropdown-menu.show {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 9999 !important;
-  pointer-events: auto !important;
-}
-
-/* Ensure dropdown items are clickable */
+/* CRITICAL DROPDOWN FIX - Add these styles at the end to override any conflicting rules */
+/* CRITICAL FIX: Enable dropdown item clicks */
 .dropdown-item {
-  position: relative !important;
-  z-index: 10000 !important;
-  cursor: pointer !important;
   pointer-events: auto !important;
-  user-select: auto !important;
 }
 
-/* Fix positioning for dropdown menus */
+/* Make sure dropdown menus display properly */
+.dropdown-menu.show {
+  display: block !important;
+}
+
+/* Make sure dropdowns have the right positioning */
 .dropdown {
   position: relative !important;
 }
 
 .dropdown-menu {
   position: absolute !important;
-  top: 100% !important;
-  left: 0 !important;
-  min-width: 10rem !important;
-  background-color: white !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
-  border-radius: 0.25rem !important;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
-  padding: 0.5rem 0 !important;
-}
-
-/* Fix z-index for site banner to ensure dropdowns stay on top */
-.site-banner {
-  z-index: 100 !important;
-}
-
-/* Fix navigation container layout */
-.nav-container {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: flex-end !important;
-  align-items: center !important;
-  gap: var(--space-lg) !important;
 }
