@@ -1,128 +1,155 @@
 // assets/js/navigation.js
-// Consolidated navigation functionality
+// Consolidated navigation functionality - FIXED VERSION
 
 /**
  * Initialize dropdown functionality for the entire site
  */
 export function initDropdowns() {
-  console.log('Initializing unified dropdown functionality');
+  console.log('Initializing dropdown functionality - fixed version');
   
   // Select all dropdown toggles
   const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
   console.log(`Found ${dropdownToggles.length} dropdown toggles`);
   
-  // Add click event to each dropdown toggle (without cloning elements)
+  // DO NOT CLONE - this breaks event listeners
+  // Add click event to each dropdown toggle directly
   dropdownToggles.forEach(toggle => {
-    // Clean up any existing listeners
+    console.log('Attaching click handler to dropdown:', toggle.textContent.trim());
+    
+    // Explicitly remove any existing handlers first by replacing with a clone
     const newToggle = toggle.cloneNode(true);
     toggle.parentNode.replaceChild(newToggle, toggle);
     
-    // Add new listener
-    newToggle.addEventListener('click', handleToggleClick);
+    // Add the click event listener directly
+    newToggle.addEventListener('click', function(e) {
+      console.log('Dropdown clicked:', this.textContent.trim());
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Find dropdown and menu
+      const dropdown = this.closest('.dropdown');
+      const menu = dropdown.querySelector('.dropdown-menu');
+      
+      if (!menu) {
+        console.error('No dropdown menu found for toggle:', this.textContent.trim());
+        return;
+      }
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
+        if (openMenu !== menu) {
+          openMenu.classList.remove('show');
+          openMenu.style.display = ''; // Reset display style
+        }
+      });
+      
+      // Toggle current dropdown
+      console.log('Before toggle, menu has show class:', menu.classList.contains('show'));
+      menu.classList.toggle('show');
+      console.log('After toggle, menu has show class:', menu.classList.contains('show'));
+      
+      // Force style to ensure visibility
+      if (menu.classList.contains('show')) {
+        menu.style.display = 'block';
+      } else {
+        menu.style.display = '';
+      }
+      
+      // Update ARIA attributes for accessibility
+      this.setAttribute('aria-expanded', menu.classList.contains('show'));
+    });
   });
   
   // Handle dropdown item clicks properly
   document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', function(e) {
-      // Only prevent default if it's a button with no href or "#" href
-      const href = this.getAttribute('href');
-      if (this.tagName === 'BUTTON' || href === '#' || href === '') {
-        e.preventDefault();
-      }
+      console.log('Dropdown item clicked:', this.textContent.trim());
       
-      // Special handling for logout button and other special actions
+      // Special handling for logout button
       if (this.id === 'logout-btn') {
         // Logout is handled separately in banner.js
         return;
       }
       
-      // For regular links, let the browser handle navigation
-      console.log('Dropdown item clicked:', this.textContent, 'href:', href);
-      
-      // Close the dropdown
-      const dropdown = this.closest('.dropdown');
-      const menu = dropdown.querySelector('.dropdown-menu');
-      menu.classList.remove('show');
+      // Close the dropdown after clicking an item
+      const menu = this.closest('.dropdown-menu');
+      if (menu) {
+        menu.classList.remove('show');
+        menu.style.display = '';
+      }
     });
   });
   
   // Close dropdowns when clicking outside
-  document.addEventListener('click', handleOutsideClick);
-  
-  // Close dropdowns when pressing Escape key
-  document.addEventListener('keydown', handleEscKey);
-  
-  // Debug CSS to help troubleshoot layout issues
-  const navContainer = document.querySelector('.nav-container');
-  if (navContainer) {
-    console.log('Nav container styles:', window.getComputedStyle(navContainer));
-    console.log('Nav container children:', navContainer.children);
-  }
-}
-
-/**
- * Handle dropdown toggle click
- * @param {Event} e - Click event
- */
-function handleToggleClick(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  
-  console.log('Dropdown toggle clicked:', this.textContent.trim());
-  
-  // Find dropdown and menu
-  const dropdown = this.closest('.dropdown');
-  const menu = dropdown.querySelector('.dropdown-menu');
-  
-  if (!menu) {
-    console.error('No dropdown menu found for toggle:', this.textContent.trim());
-    return;
-  }
-  
-  // Close all other dropdowns
-  document.querySelectorAll('.dropdown-menu.show').forEach(openMenu => {
-    if (openMenu !== menu) {
-      openMenu.classList.remove('show');
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        menu.style.display = '';
+      });
     }
   });
   
-  // Toggle current dropdown
-  menu.classList.toggle('show');
+  // Close dropdowns when pressing Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+        menu.style.display = '';
+      });
+    }
+  });
   
-  // Update ARIA attributes for accessibility
-  this.setAttribute('aria-expanded', menu.classList.contains('show'));
+  // Add direct CSS to ensure proper display
+  addEssentialCSS();
 }
 
 /**
- * Handle clicks outside of dropdowns
- * @param {Event} e - Click event
+ * Add essential CSS directly to ensure dropdowns display properly
  */
-function handleOutsideClick(e) {
-  if (!e.target.closest('.dropdown')) {
-    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-      menu.classList.remove('show');
-      
-      // Update ARIA attributes on associated toggle
-      const toggle = menu.closest('.dropdown').querySelector('.dropdown-toggle');
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    });
-  }
-}
-
-/**
- * Handle Escape key to close dropdowns
- * @param {KeyboardEvent} e - Keyboard event
- */
-function handleEscKey(e) {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-      menu.classList.remove('show');
-      
-      // Update ARIA attributes on associated toggle
-      const toggle = menu.closest('.dropdown').querySelector('.dropdown-toggle');
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    });
-  }
+function addEssentialCSS() {
+  // Only add if not already present
+  if (document.getElementById('essential-dropdown-css')) return;
+  
+  const style = document.createElement('style');
+  style.id = 'essential-dropdown-css';
+  style.textContent = `
+    /* Essential dropdown display fix */
+    .dropdown-menu.show {
+      display: block !important;
+      z-index: 9999 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    
+    /* Ensure nav container is horizontal */
+    .nav-container {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: flex-end !important;
+      gap: 1.5rem !important;
+    }
+    
+    /* Dropdown position fix */
+    .dropdown {
+      position: relative !important;
+    }
+    
+    /* Dropdown menu position */
+    .dropdown-menu {
+      position: absolute !important;
+      top: 100% !important;
+      left: 0 !important;
+      min-width: 10rem !important;
+      padding: 0.5rem 0 !important;
+      margin-top: 0.125rem !important;
+      background-color: white !important;
+      border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      border-radius: 0.25rem !important;
+    }
+  `;
+  document.head.appendChild(style);
+  console.log('Essential CSS added to fix dropdown display');
 }
 
 /**
