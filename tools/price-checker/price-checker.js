@@ -1,6 +1,7 @@
 // tools/price-checker/price-checker.js
 import { db, collection, getDocs, query, where, orderBy } from '/assets/js/firebase.js';
 import { formatDndCurrency, debounce } from '/assets/js/utils.js';
+import { loadBanner } from '/assets/js/components.js';
 
 // Global variables
 let allItems = [];
@@ -9,48 +10,21 @@ let currentPage = 1;
 const itemsPerPage = 12;
 let baseTypeOptions = {};
 let activeFilters = {
-  type: '',
-  baseType: '',
-  minPrice: '',
-  maxPrice: '',
-  priceUnit: 'gold',
-  rarities: ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary', 'Artifact'],
-  book: ''
+  // Your existing filter defaults...
 };
 let sortOption = 'name';
 let searchTerm = '';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load banner component
-  const bannerPlaceholder = document.getElementById('banner-placeholder');
-  
   try {
-    // Load banner HTML
-    const response = await fetch('/components/banner/banner.html');
-    if (response.ok) {
-      const html = await response.text();
-      bannerPlaceholder.innerHTML = html;
-      
-      // Execute banner script after inserting HTML with explicit onload handler
-      const bannerScript = document.createElement('script');
-      bannerScript.type = 'module';
-      bannerScript.src = '/components/banner/banner.js';
-      bannerScript.onload = () => {
-        console.log('Banner script loaded and executed successfully');
-      };
-      bannerScript.onerror = (error) => {
-        console.error('Error loading banner script:', error);
-      };
-      document.body.appendChild(bannerScript);
-    } else {
-      console.error('Failed to load banner component:', response.status);
-    }
+    // First, load the banner component
+    await loadBanner();
+    
+    // Now initialize page-specific functionality
+    initPriceChecker();
   } catch (error) {
-    console.error('Error loading banner component:', error);
+    console.error('Error initializing price checker:', error);
   }
-  
-  // Initialize price checker
-  initPriceChecker();
 });
 
 async function initPriceChecker() {

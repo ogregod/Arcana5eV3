@@ -2,38 +2,36 @@
 import { auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js';
 import { signIn } from '/assets/js/auth.js';
 
+// login/login.js
+import { auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js';
+import { signIn } from '/assets/js/auth.js';
+import { loadBanner } from '/assets/js/components.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load banner component
-  const bannerPlaceholder = document.getElementById('banner-placeholder');
-  
   try {
-    // Load banner HTML
-    const response = await fetch('/components/banner/banner.html');
-    if (response.ok) {
-      const html = await response.text();
-      bannerPlaceholder.innerHTML = html;
-      
-      // Execute banner script after inserting HTML with explicit onload handler
-      const bannerScript = document.createElement('script');
-      bannerScript.type = 'module';
-      bannerScript.src = '/components/banner/banner.js';
-      bannerScript.onload = () => {
-        console.log('Banner script loaded and executed successfully');
-      };
-      bannerScript.onerror = (error) => {
-        console.error('Error loading banner script:', error);
-      };
-      document.body.appendChild(bannerScript);
-    } else {
-      console.error('Failed to load banner component:', response.status);
-    }
+    // First, load the banner component
+    await loadBanner();
+    
+    // Now initialize page-specific functionality
+    initLoginPage();
   } catch (error) {
-    console.error('Error loading banner component:', error);
+    console.error('Error initializing login page:', error);
   }
-  
-  // Initialize login functionality
-  initLoginPage();
 });
+
+function initLoginPage() {
+  // Check if user is already logged in
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      // User is signed in, redirect to welcome page
+      window.location.href = '/welcome/';
+    }
+  });
+  
+  // Setup form submission
+  const loginForm = document.getElementById('login-form');
+  // Rest of your existing login page initialization code...
+}
 
 function initLoginPage() {
   // Check if user is already logged in

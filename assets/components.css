@@ -29,7 +29,7 @@
   text-decoration: none;
 }
 
-/* Navigation - FIXED TO ENSURE HORIZONTAL LAYOUT */
+/* Navigation */
 .nav-container {
   display: flex;
   flex-direction: row;
@@ -38,7 +38,7 @@
   gap: var(--space-lg);
 }
 
-/* Dropdown Component - ENHANCED FOR RELIABILITY */
+/* Dropdown Component - SIMPLIFIED & CLEANED UP */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -76,7 +76,7 @@
   vertical-align: middle;
 }
 
-/* Dropdown menu - FIXED POSITIONING AND VISIBILITY */
+/* Dropdown menu */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -96,15 +96,14 @@
 .dropdown:last-child .dropdown-menu {
   left: auto;
   right: 0;
-  transform: none;
 }
 
-/* Critical show class - FIXED FOR RELIABILITY */
+/* Show class - simple and clean */
 .dropdown-menu.show {
-  display: block !important;
+  display: block;
 }
 
-/* Dropdown items - IMPROVED interaction */
+/* Dropdown items */
 .dropdown-item {
   display: block;
   width: 100%;
@@ -119,7 +118,6 @@
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  z-index: 10000;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -185,7 +183,7 @@
   flex: 1;
 }
 
-/* Responsive adjustments - FIXED FOR MOBILE */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .row {
     flex-direction: column;
@@ -196,7 +194,7 @@
   }
 }
 
-/* For very small screens - IMPROVED */
+/* For very small screens */
 @media (max-width: 576px) {
   .banner-container {
     flex-direction: row;
@@ -219,24 +217,4 @@
     padding: var(--space-xs) var(--space-sm);
     font-size: 0.9rem;
   }
-}
-
-/* CRITICAL DROPDOWN FIX - Add these styles at the end to override any conflicting rules */
-/* CRITICAL FIX: Enable dropdown item clicks */
-.dropdown-item {
-  pointer-events: auto !important;
-}
-
-/* Make sure dropdown menus display properly */
-.dropdown-menu.show {
-  display: block !important;
-}
-
-/* Make sure dropdowns have the right positioning */
-.dropdown {
-  position: relative !important;
-}
-
-.dropdown-menu {
-  position: absolute !important;
 }

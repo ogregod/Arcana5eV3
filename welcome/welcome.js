@@ -1,32 +1,21 @@
-// Example improved page loading script (for each page)
+// welcome/welcome.js
+import { loadBanner } from '/assets/js/components.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load banner component
-  const bannerPlaceholder = document.getElementById('banner-placeholder');
-  
   try {
-    // Load banner HTML
-    const response = await fetch('/components/banner/banner.html');
-    if (response.ok) {
-      const html = await response.text();
-      bannerPlaceholder.innerHTML = html;
-      
-      // Execute banner script after inserting HTML with explicit onload handler
-      const bannerScript = document.createElement('script');
-      bannerScript.type = 'module';
-      bannerScript.src = '/components/banner/banner.js';
-      bannerScript.onload = () => {
-        console.log('Banner script loaded and executed successfully');
-      };
-      bannerScript.onerror = (error) => {
-        console.error('Error loading banner script:', error);
-      };
-      document.body.appendChild(bannerScript);
-    } else {
-      console.error('Failed to load banner component:', response.status);
-    }
+    // First, load the banner component
+    await loadBanner();
+    
+    // Now initialize page-specific functionality
+    initWelcomePage();
   } catch (error) {
-    console.error('Error loading banner component:', error);
+    console.error('Error initializing welcome page:', error);
   }
-  
-  // Continue with page-specific code...
 });
+
+function initWelcomePage() {
+  // Your existing welcome page functionality here
+  console.log('Welcome page initialized');
+  
+  // If you need to add any welcome page specific event listeners or logic
+}
